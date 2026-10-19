@@ -1,11 +1,11 @@
 [project]
 name = "ai-engineer-journey"
 version = "0.1.0"
-description = "Add your description here"
+description = "Applied AI engineering, built in public: LLM APIs, structured output, RAG, agents, and evals."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "openai>=3.34.0",
+    "google-genai>=1.0.0",
     "python-dotenv>=1.2.4",
 ]
 
