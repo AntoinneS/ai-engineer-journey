@@ -15,6 +15,7 @@ MAX_ATTEMPTS = 3
 
 
 def is_transient(exc: BaseException) -> bool:
+    """Say whether retrying could plausibly fix this error."""
     # Retry ONLY where waiting can plausibly help.
     if isinstance(exc, genai_errors.ServerError):
         return True  # 5xx - their side
@@ -30,11 +31,13 @@ def is_transient(exc: BaseException) -> bool:
     reraise=True,
 )
 def generate_with_retry(client, model, contents, config):
+    """Call Gemini, retrying only transient failures."""
     return client.models.generate_content(
         model=model, contents=contents, config=config)
 
 
 def make_client():
+    """Build a Gemini client, exiting early if the key is missing."""
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         print("Error: GEMINI_API_KEY not set - check .env.")
@@ -43,6 +46,7 @@ def make_client():
 
 
 def estimate_cost_usd(usage, in_per_1k, out_per_1k):
+    """Estimate one call's USD cost from its token usage."""
     in_cost = (usage.prompt_token_count / 1000) * in_per_1k
     out_cost = (usage.candidates_token_count / 1000) * out_per_1k
     return in_cost + out_cost
@@ -91,6 +95,7 @@ No introduction, no summary, no extra text."""
 
 
 def build_user_content(notes):
+    """Wrap raw notes in the fencing the prompt expects."""
     return (
         "Extract the action items from these notes.\n\n"
         "--- NOTES START ---\n"
@@ -100,6 +105,7 @@ def build_user_content(notes):
 
 
 def attempt_extract(client, notes, feedback=None):
+    """Make one extraction attempt and validate its shape."""
     contents = build_user_content(notes)
     if feedback:
         contents += (
@@ -122,6 +128,7 @@ def attempt_extract(client, notes, feedback=None):
 
 
 def extract_validated(client, notes):
+    """Retry extraction with feedback until it validates."""
     feedback = None
     last_error = None
     for attempt in range(1, MAX_ATTEMPTS + 1):

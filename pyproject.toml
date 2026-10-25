@@ -8,6 +8,7 @@ dependencies = [
     "google-genai>=1.0.0",
     "pydantic>=2.14.1",
     "python-dotenv>=1.2.4",
+    "tenacity>=9.1.4",
 ]
 
 [project.scripts]
@@ -16,3 +17,8 @@ ai-engineer-journey = "ai_engineer_journey:main"
 [build-system]
 requires = ["uv_build>=0.13.1,<0.14.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
