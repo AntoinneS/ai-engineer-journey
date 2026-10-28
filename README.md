@@ -37,10 +37,10 @@ Golden-set baseline (v0.1, gemini-2.5-flash,
 5 cases, [N] items):
 | Field | Accuracy |
 |----------|----------|
-| Owner | [x]% |
-| Task | [x]% |
-| Deadline | [x]% |
-Eval run cost: $[amount] ([n] calls).
+| Owner | [50]% |
+| Task | [50]% |
+| Deadline | [37.5]% |
+Eval run cost: $[0.000449] ([5] calls).
 Goldens live in goldens/ - hand-written expected
 output, never generated from model output.
 
